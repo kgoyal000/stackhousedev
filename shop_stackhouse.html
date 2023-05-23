@@ -1,0 +1,1840 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop_stackhouse</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.css"
+        integrity="sha512-C4k/QrN4udgZnXStNFS5osxdhVECWyhMsK1pnlk+LkC7yJGCqoYxW4mH3/ZXLweODyzolwdWSqmmadudSHMRLA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> -->
+    <style>
+        body {
+            /* font: normal 14px/100% "Andale Mono", AndaleMono, monospace;
+  width: 300px;
+  margin: 0 auto;
+  display:flex;
+  align-items:center;
+  height:100vh; */
+        }
+
+        .Click-here {
+            cursor: pointer;
+            background-image: linear-gradient(190deg, #f83600 0%, #fee140 100%);
+            color: #fff;
+            width: 180px;
+            text-align: center;
+            font-size: 16px;
+            padding: 18px 0;
+            margin: 0 auto;
+            transition: background-image 3s ease-in-out;
+        }
+
+        .Click-here:hover {
+            transition: background-image 3s ease-in-out;
+            background-image: linear-gradient(90deg, #fee140 0%, #f83600 100%);
+        }
+
+        .custom-model-main {
+            text-align: center;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            /* z-index: 1050; */
+            -webkit-overflow-scrolling: touch;
+            outline: 0;
+            opacity: 0;
+            -webkit-transition: opacity 0.15s linear, z-index 0.15;
+            -o-transition: opacity 0.15s linear, z-index 0.15;
+            transition: opacity 0.15s linear, z-index 0.15;
+            z-index: -1;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .model-open {
+            z-index: 99999;
+            opacity: 1;
+            overflow: hidden;
+        }
+
+        .custom-model-inner {
+            -webkit-transform: translate(0, -25%);
+            -ms-transform: translate(0, -25%);
+            transform: translate(0, -25%);
+            -webkit-transition: -webkit-transform 0.3s ease-out;
+            -o-transition: -o-transform 0.3s ease-out;
+            transition: -webkit-transform 0.3s ease-out;
+            -o-transition: transform 0.3s ease-out;
+            transition: transform 0.3s ease-out;
+            transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
+            display: inline-block;
+            vertical-align: middle;
+            width: 80%;
+            margin: 30px auto;
+            max-width: 97%;
+        }
+
+        .custom-model-wrap {
+            display: block;
+            width: 100%;
+            position: relative;
+            background-color: #fff;
+            border: 1px solid #999;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+            background-clip: padding-box;
+            outline: 0;
+            text-align: left;
+            padding: 20px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            max-height: calc(100vh - 70px);
+            overflow-y: auto;
+        }
+
+        .model-open .custom-model-inner {
+            -webkit-transform: translate(0, 0);
+            -ms-transform: translate(0, 0);
+            transform: translate(0, 0);
+            position: relative;
+            z-index: 999;
+        }
+
+        .model-open .bg-overlay {
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 99;
+        }
+
+        .bg-overlay {
+            background: rgba(0, 0, 0, 0);
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            -webkit-transition: background 0.15s linear;
+            -o-transition: background 0.15s linear;
+            transition: background 0.15s linear;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 0;
+            top: -30px;
+            cursor: pointer;
+            z-index: 99;
+            font-size: 30px;
+            color: #fff;
+        }
+        .choose-crop-size {
+                display: flex;
+            flex-wrap: wrap;
+        }
+
+        .choose-crop-size .row.row-spacing {
+            width: 25%;
+        }
+
+        @media screen and (min-width:800px) {
+            .custom-model-main:before {
+                content: "";
+                display: inline-block;
+                height: auto;
+                vertical-align: middle;
+                margin-right: -0px;
+                height: 100%;
+            }
+        }
+
+        @media screen and (max-width:799px) {
+            .custom-model-inner {
+                margin-top: 45px;
+            }
+        }
+
+        .modal-footer .btn {
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="main_container">
+            <div class="heading_cont">
+                <h1>all products</h1>
+            </div>
+            <div class="lead_content_cont">
+                <h2>1. upload image</h2>
+                <h4>
+                    <em>To place an order, upload your image using the fields below or login to your account above.
+                    </em>
+                </h4>
+                <h4>
+                    <u>File Requirements</u>
+                </h4>
+                <div class="img_cont">
+                    <img src="images/icon1.png" alt="icon_1">
+                    <img src="images/icon2.png" alt="icon_2">
+                    <img src="images/icon3.png" alt="icon_3">
+                    <img src="images/icon4.png" alt="icon_4">
+                </div>
+                <h4>
+                    <strong>
+                        <em>
+                            - 150 Pixels Per Inch Minimum (Without Enlarging)
+                        </em>
+                    </strong>
+                </h4>
+                <h4>
+                    <strong>
+                        <em>
+                            - 100 MB Maximum File Size
+                        </em>
+                    </strong>
+                </h4>
+                <h4>
+                    <strong>
+                        <em>
+                            - RGB Color Space (Embedded ICC Profile)
+                        </em>
+                    </strong>
+                </h4>
+                <h4><em><a href="#">Contact us</a> for assistance. <a href="#">Click here</a> for our recommended file
+                        settings. Please do not exceed 30 individual images per order. For orders of 30+ individual
+                        images, please break the order up into separate orders or <a href="#">contact us</a> for
+                        assistance.</em></h4>
+                <div class="term_input_cont">
+                    <input type="checkbox" name="terms" id="terms" checked="checked">
+                    <span>I own the copyright to these photo(s) or have been granted authorization to print them.</span>
+                </div>
+                <div>
+                    <div class="uploadOuter">
+                        <label for="uploadFile" class="btn btn-primary"><img src="images/icons8-plus-50.png"
+                                alt="add_icon1"> Select Images</label>
+                        <span class="dragBox">
+                            Darg and Drop Your Images Here
+                            <input type="file" onChange="dragNdrop(event)" ondragover="drag()" ondrop="drop()"
+                                id="uploadFile" />
+                        </span>
+                    </div>
+                    <div class="img_preview_cont">
+                        <h2>Your Uploaded Files</h2>
+                        <div id="preview">
+                            <p>You have not uploaded any images yet. Please use the upload tool above to get started.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="notes_cont">
+                    <em><u>Notes on File Types</u></em>
+                    <p><em>We accept TIFF, JPEG, PNG, and PSD file formats. 100Mb max upload size. If your file is
+                            larger than 100MB, please convert it to JPEG to reduce the file size. If your file is still
+                            larger than 100Mb, please send the file to Chris@TheStackhouse.com using a file transfer
+                            service. Please include a <a href="#">Stackhouse Printing Order</a> form with each
+                            order.</em></p>
+                </div>
+            </div>
+
+        </div>
+        <div class="custom-model-main">
+            <div class="custom-model-inner">
+                <div class="close-btn">x</div>
+                <div class="custom-model-wrap">
+                    <div class="pop-up-content-wrap">
+                        <section>
+                            <div class="main_container">
+                                <div class="crop_container">
+
+
+                                    <div class="img_size_cont">
+
+                                        <h2>2. choose a size</h2>
+                                        <div class="large-4 small-12 columns choose-crop-size">
+
+
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="4"
+                                                            data-height="4" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="4x4"
+                                                            checked="checked"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_4x4">
+                                                        4x4
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="4"
+                                                            data-height="6" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="4x6"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_4x6">
+                                                        4x6
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="5"
+                                                            data-height="5" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="5x5"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_5x5">
+                                                        5x5
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="5"
+                                                            data-height="7" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="5x7"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_5x7">
+                                                        5x7
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="6"
+                                                            data-height="6" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="6x6"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_6x6">
+                                                        6x6
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="6"
+                                                            data-height="7.5" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="6x7.5"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_6x75">
+                                                        6x7.5
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="6"
+                                                            data-height="8" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="6x8"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_6x8">
+                                                        6x8
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="6"
+                                                            data-height="9" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="6x9"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_6x9">
+                                                        6x9
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="6"
+                                                            data-height="10" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="6x10"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_6x10">
+                                                        6x10
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="7"
+                                                            data-height="5" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="7x5"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_7x5">
+                                                        7x5
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="7"
+                                                            data-height="10" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="7x10"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_7x10">
+                                                        7x10
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="8"
+                                                            data-height="8" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="8x8"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_8x8">
+                                                        8x8
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="8"
+                                                            data-height="10" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="8x10"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_8x10">
+                                                        8x10
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="8"
+                                                            data-height="11" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="8x11"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_8x11">
+                                                        8x11
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="8"
+                                                            data-height="12" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="8x12"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_8x12">
+                                                        8x12
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="8"
+                                                            data-height="18" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="8x18"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_8x18">
+                                                        8x18
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="8"
+                                                            data-height="24" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="8x24"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_8x24">
+                                                        8x24
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="8.5"
+                                                            data-height="11" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="8.5x11"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_85x11">
+                                                        8.5x11
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="9"
+                                                            data-height="12" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="9x12"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_9x12">
+                                                        9x12
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="9"
+                                                            data-height="15" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="9x15"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_9x15">
+                                                        9x15
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="9"
+                                                            data-height="18" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="9x18"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_9x18">
+                                                        9x18
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="10"
+                                                            data-height="10" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="10x10"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_10x10">
+                                                        10x10
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="10"
+                                                            data-height="14" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="10x14"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_10x14">
+                                                        10x14
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="10"
+                                                            data-height="15" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="10x15"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_10x15">
+                                                        10x15
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="10"
+                                                            data-height="16" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="10x16"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_10x16">
+                                                        10x16
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="10"
+                                                            data-height="20" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="10x20"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_10x20">
+                                                        10x20
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="10"
+                                                            data-height="30" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="10x30"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_10x30">
+                                                        10x30
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="11"
+                                                            data-height="14" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="11x14"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_11x14">
+                                                        11x14
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="11"
+                                                            data-height="17" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="11x17"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_11x17">
+                                                        11x17
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="11"
+                                                            data-height="19" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="11x19"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_11x19">
+                                                        11x19
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="12"
+                                                            data-height="12" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="12x12"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_12x12">
+                                                        12x12
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="12"
+                                                            data-height="15" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="12x15"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_12x15">
+                                                        12x15
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="12"
+                                                            data-height="16" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="12x16"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_12x16">
+                                                        12x16
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="12"
+                                                            data-height="18" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="12x18"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_12x18">
+                                                        12x18
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="12"
+                                                            data-height="24" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="12x24"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_12x24">
+                                                        12x24
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_12x36">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        12x36<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="13"
+                                                            data-height="19" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="13x19"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_13x19">
+                                                        13x19
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="14"
+                                                            data-height="14" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="14x14"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_14x14">
+                                                        14x14
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="14"
+                                                            data-height="18" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="14x18"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_14x18">
+                                                        14x18
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="14"
+                                                            data-height="21" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="14x21"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_14x21">
+                                                        14x21
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="15"
+                                                            data-height="20" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="15x20"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_15x20">
+                                                        15x20
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_15x45">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        15x45<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="16"
+                                                            data-height="16" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="16x16"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_16x16">
+                                                        16x16
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="16"
+                                                            data-height="20" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="16x20"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_16x20">
+                                                        16x20
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="16"
+                                                            data-height="24" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="16x24"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_16x24">
+                                                        16x24
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_16x48">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        16x48<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_17x41">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        17x41<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="18"
+                                                            data-height="24" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="18x24"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_18x24">
+                                                        18x24
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="18"
+                                                            data-height="27" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="18x27"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_18x27">
+                                                        18x27
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="20"
+                                                            data-height="20" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="20x20"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_20x20">
+                                                        20x20
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="20"
+                                                            data-height="25" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="20x25"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_20x25">
+                                                        20x25
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="20"
+                                                            data-height="30" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="20x30"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_20x30">
+                                                        20x30
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_20x40">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        20x40<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_20x60">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        20x60<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="21"
+                                                            data-height="28" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="21x28"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_21x28">
+                                                        21x28
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label>
+                                                        <input class="crop-size crop-size-js" data-width="22"
+                                                            data-height="33" data-original-img-width="5266.0"
+                                                            data-original-img-height="3403.0" data-minimum-dpi="150.0"
+                                                            data-object-id="6060428" type="radio" value="22x33"
+                                                            name="art_print_product[product_attributes][image_datum_attributes][crop_size]"
+                                                            id="art_print_product_product_attributes_image_datum_attributes_crop_size_22x33">
+                                                        22x33
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_24x24">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        24x24<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_24x30">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        24x30<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_24x32">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        24x32<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_24x36">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        24x36<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_24x48">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        24x48<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_26x39">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        26x39<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_27x36">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        27x36<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_28x35">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        28x35<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_28x42">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        28x42<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_30x30">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        30x30<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_30x40">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        30x40<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_30x45">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        30x45<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_30x60">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        30x60<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_32x40">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        32x40<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_32x48">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        32x48<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_33x44">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        33x44<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_34x51">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        34x51<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_36x36">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        36x36<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_36x45">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        36x45<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_36x48">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        36x48<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_36x54">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        36x54<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_40x50">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        40x50<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label  for="size_40x60">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        40x60<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row row-spacing">
+                                                <div class="large-12 columns crop-size-container">
+                                                    <label 
+                                                        for="size_73.14x47.26">
+                                                        <input type="radio" name="size" id="size_"
+                                                            >
+                                                        73.14x47.26<span style="color: red;">*</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+
+
+
+                                            <div id="cropped_price" class="row row-spacing"
+                                                style="margin-top: 0px; padding-top: 20px; margin-bottom: 10px;"
+                                                data-product-id="6060428" data-medium-id="17164"
+                                                data-style="rolled_up_paper">
+
+                                                <div class="large-12 columns item-price-container">
+                                                    <div class="price-with-automatic-discount">
+                                                        <span class="item-price discounted-price">$ 3.00</span>
+
+                                                        <a href="#"
+                                                            class="discounted-price-help discounted-price-help-js"
+                                                            data-dropdown="help_user_site_line_item_coupon_description"
+                                                            data-options="is_hover:true"><i
+                                                                class="fa fa-question-circle red"></i></a>
+
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <div class="large-12 columns">
+                                                    <p><span class="medium-explanation">more options are available on
+                                                            the next page...</span></p>
+                                                </div>
+
+                                            </div>
+
+
+
+
+                                            <div class="row row-spacing" style="margin-top: 0px;">
+                                                <div class="large-12 columns">
+                                                    <p style="margin-bottom: 0px; font-style: italic;"><span
+                                                            style="color: red;">*</span> image is too small to print
+                                                        this size.</p>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row row-spacing" style="margin-top: 0px;">
+                                                <div class="large-8 columns">
+                                                    <p style="margin-bottom: 0px; font-style: italic;"><span>-</span>
+                                                        all sizes are in inches</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="img_crop_cont">
+                                        <div class="img_heading_cont">
+                                            <h2>3. SET THE PRINTABLE AREA</h2>
+                                        </div>
+                                        <div class="result">
+                                            <img src="" alt="" id="image">
+                                        </div>
+                                        <div class="box">
+                                            <div class="options hide">
+                                                <label> Width</label>
+                                                <input type="number" class="img-w" value="300" min="100" max="1200" />
+                                            </div>
+                                            <!-- save btn -->
+                                            <button class="save Click-here">Save</button>
+                                            <!-- download btn -->
+                                            <a href="" class="btn1 download hide">Download</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-overlay"></div>
+        </div>
+
+        <main class="page">
+
+            <!-- leftbox -->
+            <div class="box-2">
+
+            </div>
+            <!--rightbox-->
+            <div class="box-2 img-result hide">
+                <!-- result of crop -->
+                <img class="cropped" src="" alt="">
+            </div>
+            <!-- input file -->
+
+        </main>
+    </section>
+
+    <div class="modal fade" id="cropAvatarmodal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalLabel">Crop the image</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="img-container">
+                <img id="uploadedAvatar" src="https://avatars0.githubusercontent.com/u/3456749">
+              </div>
+              <div class="large-4 small-12 columns choose-crop-size">
+          
+  
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="4" data-height="4" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="4x4" checked="checked" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_4x4">
+                        4x4
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="4" data-height="6" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="4x6" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_4x6">
+                        4x6
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="5" data-height="5" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="5x5" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_5x5">
+                        5x5
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="5" data-height="7" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="5x7" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_5x7">
+                        5x7
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="6" data-height="6" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="6x6" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_6x6">
+                        6x6
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="6" data-height="7.5" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="6x7.5" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_6x75">
+                        6x7.5
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="6" data-height="8" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="6x8" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_6x8">
+                        6x8
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="6" data-height="9" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="6x9" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_6x9">
+                        6x9
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="6" data-height="10" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="6x10" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_6x10">
+                        6x10
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="7" data-height="5" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="7x5" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_7x5">
+                        7x5
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="7" data-height="10" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="7x10" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_7x10">
+                        7x10
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="8" data-height="8" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="8x8" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_8x8">
+                        8x8
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="8" data-height="10" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="8x10" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_8x10">
+                        8x10
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="8" data-height="11" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="8x11" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_8x11">
+                        8x11
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="8" data-height="12" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="8x12" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_8x12">
+                        8x12
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="8" data-height="18" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="8x18" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_8x18">
+                        8x18
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="8" data-height="24" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="8x24" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_8x24">
+                        8x24
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="8.5" data-height="11" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="8.5x11" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_85x11">
+                        8.5x11
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="9" data-height="12" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="9x12" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_9x12">
+                        9x12
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="9" data-height="15" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="9x15" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_9x15">
+                        9x15
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="9" data-height="18" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="9x18" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_9x18">
+                        9x18
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="10" data-height="10" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="10x10" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_10x10">
+                        10x10
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="10" data-height="14" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="10x14" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_10x14">
+                        10x14
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="10" data-height="15" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="10x15" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_10x15">
+                        10x15
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="10" data-height="16" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="10x16" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_10x16">
+                        10x16
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="10" data-height="20" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="10x20" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_10x20">
+                        10x20
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="10" data-height="30" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="10x30" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_10x30">
+                        10x30
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="11" data-height="14" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="11x14" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_11x14">
+                        11x14
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="11" data-height="17" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="11x17" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_11x17">
+                        11x17
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="11" data-height="19" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="11x19" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_11x19">
+                        11x19
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="12" data-height="12" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="12x12" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_12x12">
+                        12x12
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="12" data-height="15" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="12x15" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_12x15">
+                        12x15
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="12" data-height="16" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="12x16" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_12x16">
+                        12x16
+    </label>              </div>
+                </div>
+                <div class="row row-spacing">
+                  <div class="large-12 columns crop-size-container">
+                      <label>
+                        <input class="crop-size crop-size-js" data-width="12" data-height="18" data-original-img-width="5266.0" data-original-img-height="3403.0" data-minimum-dpi="150.0" data-object-id="6060428" type="radio" value="12x18" name="art_print_product[product_attributes][image_datum_attributes][crop_size]" id="art_print_product_product_attributes_image_datum_attributes_crop_size_12x18">
+                        12x18
+    </label>              </div>
+                </div>
+               
+    
+    
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-primary" id="crop">Crop</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"
+        integrity="sha512-6lplKUSl86rUVprDIjiW8DuOniNX8UDoRATqZSds/7t6zCQZfaCe3e5zcGaQwxa8Kpn5RTM9Fvl3X2lLV4grPQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-load-image/5.16.0/load-image.min.js" integrity="sha512-P4Gk5fB2fREiIz49ccaULeXFwefliFl4jluB9O9/jbNkEyxIqTte/LTkbhnSxOl/YRAeh4mMCOaCgsEPn1qAVw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        let storeimg = JSON.parse(localStorage.getItem("names"))
+        var preview = document.querySelector('#preview');
+
+        window.addEventListener('DOMContentLoaded', function () {
+      var avatar = document.getElementById('preview');
+      var image = document.getElementById('uploadedAvatar');
+      var input = document.getElementById('uploadFile');
+      var cropBtn = document.getElementById('crop');
+  
+      var $modal = $('#cropAvatarmodal');
+      var cropper;
+
+      $('[data-toggle="tooltip"]').tooltip();
+
+      $(".crop-size-container input").click(function(){
+        console.log($(this).val());
+        cropper.destroy();
+        let cropval =$(this).val().split('')
+        cropper = null;
+        cropper = new Cropper(image, {
+          aspectRatio: parseInt(cropval[0])/parseInt(cropval[2]),
+          viewMode: 3,
+        });
+
+        cropper.getCroppedCanvas({
+            minWidth: 256,
+            minHeight: 256,
+            maxWidth: 4096,
+            maxHeight: 4096,
+            fillColor: '#fff',
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: 'high',
+        });
+        
+        console.log(typeof(parseInt(cropval[0])+'/'+parseInt(cropval[2])))
+
+
+        cropper.setAspectRatio()
+      })
+
+      input.addEventListener('change', function (e) {
+        var files = e.target.files;
+        var done = function (url) {
+          // input.value = '';
+          console.log(input.value)
+          image.src = url;
+          console.log(image.width)
+          img_width = (image.width/150)
+          img_height = (image.height/150)
+          if(img_width < 4 || img_height < 4){
+            alert('Image resolution is very low.')
+            return;
+          }
+          $('.choose-crop-size input').each(function(){
+            console.log(img_width)
+            console.log(img_height)
+            let cropval = $(this).val().split('x')
+            if(parseFloat(cropval[0])>=img_width || parseFloat(cropval[1])>=img_height){
+                $(this).parent().css('opacity', '0.7').css('color', 'red').css('pointer-events', 'none').addClass('disabled')
+            }else{
+                $(this).parent().css('opacity', '1').css('color', 'inherit').css('pointer-events', 'auto').removeClass('disabled')
+            }
+            console.log(cropval)
+          })
+          $modal.modal('show');
+        };
+        // var reader;
+        // var file;
+        // var url;
+
+        if (files && files.length > 0) {
+          let file = files[0];
+        
+            // done(URL.createObjectURL(file));
+          // if (URL) {
+          // } 
+          
+          // else if (FileReader) {
+            reader = new FileReader();
+            reader.onload = function (e) {
+              done(reader.result);
+            };
+            reader.readAsDataURL(file);
+          // }
+        }
+      });
+      
+      
+      
+
+      $modal.on('shown.bs.modal', function () {
+        cropper = new Cropper(image, {
+          aspectRatio: 1,
+          viewMode: 3,
+        });
+
+        cropper.getCroppedCanvas({
+            minWidth: 256,
+            minHeight: 256,
+            maxWidth: 4096,
+            maxHeight: 4096,
+            fillColor: '#fff',
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: 'high',
+        });
+
+      }).on('hidden.bs.modal', function () {
+        cropper.destroy();
+        cropper = null;
+      });
+
+      cropBtn.addEventListener('click', function () {
+        // var initialAvatarURL;
+        var canvas;
+
+        $modal.modal('hide');
+
+        if (cropper) {
+          canvas =  cropper.getCroppedCanvas().toBlob(function (blob) {
+          // initialAvatarURL = avatar.src;
+          //avatar.src = canvas.toDataURL();
+          var reader = new FileReader();
+          reader.readAsDataURL(blob); 
+
+          reader.onloadend = function() {
+            var base64data = reader.result;                
+            console.log(base64data);
+            $('#preview').append(`
+                <img src="${base64data}" />
+          `)
+        }
+          
+            }, 'image/jpeg', 1);
+        }
+      });
+      
+    });
+
+        // storeimg.map((store)=>{
+        //     console.log(store)
+        //     var previewImg = document.createElement("img");
+        //     previewImg.setAttribute('src', store)
+        //     preview.appendChild(previewImg);
+        // })
+        
+        // // console.log(storeimg)
+        // // use strict
+        // var names =JSON.parse(localStorage.getItem("names"));
+       
+        // function dragNdrop(event) {
+        //     console.log(event.target.files)
+        //     let file_src = event.target.files[0]
+        //     const reader = new FileReader();
+        //     reader.readAsDataURL(file_src)
+        //     reader.addEventListener('load', () => {
+        //         localStorage.setItem('img_url', JSON.stringify(reader.result));
+        //         names.push(reader.result);
+        //         localStorage.setItem("names", JSON.stringify(names));
+        //     });
+        //     var fileName = URL.createObjectURL(event.target.files[0]);
+
+        //     //...
+        //     var storedNames = JSON.parse(localStorage.getItem("names"));
+        //     console.log(storedNames);
+        //     localStorage.setItem("img_url", JSON.stringify(fileName));
+        //     var previewImg = document.createElement("img");
+        //     previewImg.setAttribute('src', JSON.parse(localStorage.getItem("img_url")))
+        //     // previewImg.setAttribute("src", fileName);
+        //     preview.appendChild(previewImg);
+        //     let crop_img = document.querySelector('#image')
+        //     crop_img.setAttribute('src', fileName)
+        //     // init cropper
+        //     // cropper = new Cropper(crop_img);
+        //     cropper = new Cropper(crop_img, {
+        //         aspectRatio: 16 / 9,
+        //         crop(event) {
+        //             // console.log(event);
+        //             // console.log(event.detail.y);
+        //             // console.log(event.detail.width);
+        //             // console.log(event.detail.height);
+        //             // console.log(event.detail.rotate);
+        //             // console.log(event.detail.scaleX);
+        //             // console.log(event.detail.scaleY);
+        //         },
+        //     })
+        //     document.querySelector(".custom-model-main").classList.add('model-open');
+
+        // }
+        // var storedNames = JSON.parse(localStorage.getItem("names"));
+        //     console.log(storedNames);
+        // function drag() {
+        //     document.getElementById('uploadFile').parentNode.className = 'draging dragBox';
+        // }
+        // function drop() {
+        //     document.getElementById('uploadFile').parentNode.className = 'dragBox';
+        // }
+
+        // console.log(JSON.parse(localStorage.getItem("thumbnail")));
+
+        // // vars
+        // let result = document.querySelector('.result'),
+        //     img_result = document.querySelector('.img-result'),
+        //     img_w = document.querySelector('.img-w'),
+        //     img_h = document.querySelector('.img-h'),
+        //     options = document.querySelector('.options'),
+        //     save = document.querySelector('.save'),
+        //     cropped = document.querySelector('.cropped'),
+        //     dwn = document.querySelector('.download'),
+        //     upload = document.querySelector('#file-input'),
+        //     cropper = '';
+        //  document.querySelectorAll('#preview img').forEach((ele)=>{
+        //     ele.addEventListener('click',function(e){
+        //         console.log(e.target.currentSrc)
+        //     let crop_img = document.querySelector('#image')
+        //     // preview.appendChild(previewImg);
+        //     crop_img.setAttribute('src', e.target.currentSrc);
+        //     // init cropper
+        //     // cropper = new Cropper(crop_img);
+        //     cropper = new Cropper(crop_img, {
+        //         aspectRatio: 16 / 9,
+        //         crop(event) {
+        //             // console.log(event);
+        //             // console.log(event.detail.y);
+        //             // console.log(event.detail.width);
+        //             // console.log(event.detail.height);
+        //             // console.log(event.detail.rotate);
+        //             // console.log(event.detail.scaleX);
+        //             // console.log(event.detail.scaleY);
+        //         },
+        //     })
+        //     document.querySelector(".custom-model-main").classList.add('model-open');
+
+        // })
+        //  }) 
+        // // save on click
+        // save.addEventListener('click', (e) => {
+
+        //     e.preventDefault();
+        //     // get result to data uri
+        //     let imgSrc = cropper.getCroppedCanvas({
+        //         width: img_w.value // input value
+        //     }).toDataURL();
+        //     // remove hide class of img
+        //     cropped.classList.remove('hide');
+        //     img_result.classList.remove('hide');
+        //     // show image cropped
+        //     cropped.src = imgSrc;
+        //     dwn.classList.remove('hide');
+        //     dwn.download = 'imagename.png';
+        //     dwn.setAttribute('href', imgSrc);
+        // });
+        // // document.querySelector('.choose-crop-size').addEventListener('click', function(e) {
+        // //   console.log(e)
+        // // })
+        // let elementsArray = document.querySelectorAll(".crop-size-container input");
+
+        // elementsArray.forEach(function (elem) {
+        //     // console.log(elem)
+        //     elem.addEventListener("click", function (e) {
+        //         console.log(e.target.value);
+        //         let cropval = e.target.value.split('')
+        //         console.log(typeof (parseInt(cropval[0]) + '/' + parseInt(cropval[2])))
+
+
+        //         cropper.setAspectRatio(parseInt(cropval[0] / cropval[2]))
+        //     });
+
+        // });
+        // document.querySelector(".close-btn, .bg-overlay").addEventListener('click', function () {
+        //     document.querySelector(".custom-model-main").classList.remove('model-open');
+        // });
+
+    </script>
+</body>
+
+</html>
